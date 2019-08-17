@@ -1,0 +1,37 @@
+<div class="header">Native Table with Pagination</div>
+<div *ngIf="sampleJsonData">
+  <div class="mh10"> show <select class="mv20" [(ngModel)]="selectedRowCount" (ngModelChange)="changeRowCount($event)">
+      <option value="" disabled>Select</option>
+      <option [ngValue]="i" *ngFor="let i of rows">{{i}}</option>
+    </select> Entries </div>
+  <div class="table_head hideScroll" #scrollOne>
+    <table *ngIf="sampleJsonData">
+      <thead>
+        <tr>
+          <th class="tablewidth">Actions</th>
+          <th *ngFor="let key of sampleJsonData[0]|keys" class="tablewidth">{{key}}</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+  <div class="table_body" #scrollTwo (scroll)="updateScroll(scrollOne, scrollTwo)">
+    <table>
+      <tbody>
+        <tr *ngFor="let rowdata of sampleJsonData;">
+          <td class="tablewidth"><button (click)="submitRow(rowdata.id, rowdata.status)" class="btn">Submit</button></td>
+          <td *ngFor="let key of rowdata|keys" class="tablewidth">{{rowdata[key]}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="table_footer">
+    <div class="float_left" *ngIf="selectedUser"> Last submitted: ID: {{selectedUser.id}}, Status - {{selectedUser.status}} </div>
+
+    <div class="float_right">
+      <span *ngFor="let index of numOfPages" class="page_num" [ngClass]="{'selected_page':selectedPage == index }"
+        (click)="loadPage(index)">{{index}}</span>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="error_message" class="errorMessage" >{{error_message}}</div>
